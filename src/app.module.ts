@@ -1,16 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { AuthModule } from './auth/auth.module';
-import { FormsModule } from './forms/forms.module';
-import { CalendarModule } from './calendar/calendar.module';
+import { User } from './users/entities/user.entity';
 
 @Module({
   imports: [
-    UsersModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: process.env.DATABASE_TYPE as 'mysql',
@@ -19,15 +14,12 @@ import { CalendarModule } from './calendar/calendar.module';
       username: process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_DATABASE,
-      entities: [],
+      entities: [User],
       logging: true,
-      synchronize: true,
     }),
-    AuthModule,
-    FormsModule,
-    CalendarModule,
+    UsersModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

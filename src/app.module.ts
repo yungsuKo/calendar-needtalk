@@ -2,7 +2,9 @@ import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { PassportModule } from '@nestjs/passport';
 import { User } from './users/entities/user.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -14,10 +16,13 @@ import { User } from './users/entities/user.entity';
       username: process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_DATABASE,
-      entities: [User],
+      entities: ['dist/**/*.entity{.ts,.js}'],
+      synchronize: true,
       logging: true,
     }),
+    PassportModule,
     UsersModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

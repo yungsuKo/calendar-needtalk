@@ -6,11 +6,14 @@ export class User {
   id: number;
 
   @Column()
+  googleId: string;
+
+  @Column()
+  name: string;
+
+  @Column()
   email: string;
 
-  @Column()
-  password: string;
-
-  @Column()
+  @Column({ default: '안녕하세요' })
   introduce: string;
 }

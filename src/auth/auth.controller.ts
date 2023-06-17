@@ -9,13 +9,13 @@ export class AuthController {
   @Get('google')
   @UseGuards(AuthGuard('google'))
   googleLogin() {
-    // Google 로그인을 시작하는 부분
-    // pasport가 자동으로 GoogleStrategy를 실행시킴, google login page로 보냄
+    console.log('=====googleLogin 실행됨=====');
   }
 
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
   googleLoginCallback(req) {
+    console.log('=====googleLoginCallback 실행됨=====');
     console.log('req', req);
     // Google 로그인이 성공하고 나서 실행됨
     // 사용자 정보는 req.user에 저장됨

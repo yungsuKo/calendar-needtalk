@@ -24,16 +24,18 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   ): Promise<any> {
     // 여기에서 사용자 프로필을 검증하고, 필요한 경우 DB에 저장
     // ...
-    let user = await this.usersService.findOne(profile.id);
-    console.log('exist', user);
-    if (!user) {
-      user = await this.usersService.create({
-        googleId: profile.id,
-        name: profile.displayName,
-        email: profile.emails[0].value,
-      });
+
+    try {
+      const { id, displayName, emails, photos } = profile;
+      const user = {
+        googleId: id,
+        email: emails[0].value,
+        name: displayName,
+        photo: photos[0].value,
+      };
+      done(null, user);
+    } catch (error) {
+      done(error);
     }
-    console.log('strategy 실행하여 profile을 반환합니다.', profile);
-    done(null, user);
   }
 }

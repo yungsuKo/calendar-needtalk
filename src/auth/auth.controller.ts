@@ -16,7 +16,7 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   googleLoginCallback(req) {
     console.log('=====googleLoginCallback 실행됨=====');
-    console.log('req', req);
+    this.authService.googleLogin(req);
     // Google 로그인이 성공하고 나서 실행됨
     // 사용자 정보는 req.user에 저장됨
     // 이곳에서 사용자에게 적절한 응답을 보내주면 됩니다.

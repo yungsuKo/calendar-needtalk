@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
+import { find } from 'rxjs';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
@@ -22,6 +23,7 @@ export class AuthService {
       let refreshToken: string;
 
       const findUser = await this.usersService.findOne(email);
+      console.log(findUser);
       // 회원가입 되어있는 유저가 아닌 경우
       if (!findUser) {
         const googlelUser = this.usersRepository.create({
@@ -53,7 +55,7 @@ export class AuthService {
       }
       // 회원가입이 되어있는 유저의 경우
       const findUserPayload = { userId: findUser.id, email: findUser.email };
-      console.log(process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME);
+
       accessToken = this.jwtService.sign(findUserPayload, {
         secret: process.env.JWT_ACCESS_TOKEN_SECRET_KEY,
         expiresIn: `${process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME}s`,
@@ -62,7 +64,6 @@ export class AuthService {
         secret: process.env.JWT_REFRESH_TOKEN_SECRET_KEY,
         expiresIn: `${process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME}s`,
       });
-      console.log(accessToken);
       res.cookie('refreshToken', refreshToken, {
         expires: new Date(
           Date.now() + Number(process.env.JWT_REFRESH_TOKEN_EXPIRATION_TIME),
@@ -77,5 +78,14 @@ export class AuthService {
       console.log(error);
       return { ok: false, error: '로그인에 실패하였습니다.' };
     }
+  }
+
+  getAccessToken(req, res) {
+    const userPayload = req.user;
+    const accessToken = this.jwtService.sign(userPayload, {
+      secret: process.env.JWT_ACCESS_TOKEN_SECRET_KEY,
+      expiresIn: `${process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME}s`,
+    });
+    return accessToken;
   }
 }

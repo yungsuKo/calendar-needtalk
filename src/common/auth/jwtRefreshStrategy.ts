@@ -8,7 +8,7 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
     super({
       jwtFromRequest: (req) => {
         const cookie = req.headers.cookie;
-        const refreshToken = cookie.replace('myRefreshKey=', '');
+        const refreshToken = cookie.replace('refreshToken=', '');
         return refreshToken;
       },
       ignoreExpiration: false, // false로 해야 accessToken의 만료시간을 검사한다.

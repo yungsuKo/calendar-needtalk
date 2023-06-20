@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { find } from 'rxjs';
-import { User } from 'src/users/entities/user.entity';
-import { UsersService } from 'src/users/users.service';
+import { User } from 'src/api/users/entities/user.entity';
+import { UsersService } from 'src/api/users/users.service';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -23,7 +22,6 @@ export class AuthService {
       let refreshToken: string;
 
       const findUser = await this.usersService.findOne(email);
-      console.log(findUser);
       // 회원가입 되어있는 유저가 아닌 경우
       if (!findUser) {
         const googlelUser = this.usersRepository.create({

@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from './users/users.module';
+import { UsersModule } from './api/users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
-import { User } from './users/entities/user.entity';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './api/auth/auth.module';
 import { CommonModule } from './common/common.module';
+import { IndexController } from './view/Index.controller';
 
 @Module({
   imports: [
@@ -26,7 +26,7 @@ import { CommonModule } from './common/common.module';
     AuthModule,
     CommonModule,
   ],
-  controllers: [],
+  controllers: [IndexController],
   providers: [],
 })
 export class AppModule {}

@@ -4,17 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- style sheet 추가 -->
     <link rel="stylesheet" href="/static/css/styles.css" />
   </head>
   <body>
     <div>yoyoyo</div>
     <div><%= message %></div>
-    <button>
+    <button id="getAccess">
       <img
         src="/static/img/btn_google_signin_light_normal_web@2x.png"
         alt="logo"
       />
     </button>
   </body>
+  <script>
+    const getAccess = document.querySelector('#getAccess');
+    getAccess.addEventListener('click', async () => {
+      console.log('111');
+      axios.get('http://localhost:3000/auth/accessToken').then((res) => {
+        console.log('222');
+        console.log(res.data);
+      });
+    });
+  </script>
 </html>

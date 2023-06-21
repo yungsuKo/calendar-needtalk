@@ -16,7 +16,7 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleLoginCallback(@Req() req, @Res() res) {
     console.log('=====googleLoginCallback 실행됨=====');
-    const result = await this.authService.googleLogin(req, res);
+    await this.authService.googleLogin(req, res);
     return res.redirect('http://localhost:3000');
     // Google 로그인이 성공하고 나서 실행됨
     // 사용자 정보는 req.user에 저장됨
@@ -25,10 +25,9 @@ export class AuthController {
 
   @Get('accessToken')
   @UseGuards(AuthGuard('refresh'))
-  @Render('index')
-  async getAccessToken(@Req() req, @Res() res) {
+  getAccessToken(@Req() req, @Res() res) {
     console.log('=====getAccessToken 실행됨=====');
-    console.log(this.authService.getAccessToken(req, res));
-    return { message: 'hello' };
+    const accessToken = this.authService.getAccessToken(req, res);
+    res.send(accessToken);
   }
 }

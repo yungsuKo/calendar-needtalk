@@ -6,6 +6,7 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthModule } from './api/auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { IndexController } from './view/Index.controller';
+import { FormsModule } from './api/forms/forms.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { IndexController } from './view/Index.controller';
     UsersModule,
     AuthModule,
     CommonModule,
+    FormsModule,
   ],
   controllers: [IndexController],
   providers: [],

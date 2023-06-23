@@ -20,6 +20,6 @@ export class Form {
   @Column()
   status: string;
 
-  @Column()
-  timeslots: [TimeSlot];
+  @Column({ type: 'json' })
+  timeslots: TimeSlot[];
 }

@@ -1,6 +1,7 @@
 import { Controller, Get, Render, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
+import { JWTRefreshGuard } from 'src/common/auth/auth.guards';
 
 @Controller('auth')
 export class AuthController {
@@ -24,10 +25,10 @@ export class AuthController {
   }
 
   @Get('accessToken')
-  @UseGuards(AuthGuard('refresh'))
-  getAccessToken(@Req() req, @Res() res) {
+  @UseGuards(JWTRefreshGuard)
+  getAccessToken(@Req() req) {
     console.log('=====getAccessToken 실행됨=====');
-    const accessToken = this.authService.getAccessToken(req, res);
-    res.send(accessToken);
+
+    return this.authService.getAccessToken(req);
   }
 }

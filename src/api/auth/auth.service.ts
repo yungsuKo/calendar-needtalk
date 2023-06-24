@@ -16,7 +16,7 @@ export class AuthService {
     try {
       // strategy를 통해서 넘어온 user의 정보를 가지고 와서 유저가 없으면 생성, 있으면 로그인을 구현
       const {
-        user: { googleId, email, name, photo },
+        user: { googleId, email, name },
       } = req;
       let accessToken: string;
       let refreshToken: string;
@@ -36,13 +36,14 @@ export class AuthService {
           secret: process.env.JWT_ACCESS_TOKEN_SECRET_KEY,
           expiresIn: `${process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME}s`,
         });
+        console.log(accessToken);
         refreshToken = this.jwtService.sign(googlepayload, {
           secret: process.env.JWT_REFRESH_TOKEN_SECRET_KEY,
           expiresIn: `${process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME}s`,
         });
         res.cookie('refreshToken', refreshToken, {
           expires: new Date(
-            Date.now() + process.env.JWT_REFRESH_TOKEN_EXPIRATION_TIME,
+            Date.now() + Number(process.env.JWT_REFRESH_TOKEN_EXPIRATION_TIME),
           ),
           httpOnly: true,
         });
@@ -78,7 +79,7 @@ export class AuthService {
     }
   }
 
-  getAccessToken(req, res) {
+  getAccessToken(req) {
     const userPayload = req.user;
     const accessToken = this.jwtService.sign(userPayload, {
       secret: process.env.JWT_ACCESS_TOKEN_SECRET_KEY,

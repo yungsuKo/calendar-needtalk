@@ -20,7 +20,7 @@ import { RequestsModule } from './api/requests/requests.module';
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_DATABASE,
       entities: ['dist/**/*.entity{.ts,.js}'],
-      synchronize: false,
+      synchronize: true,
       logging: true,
     }),
     PassportModule,

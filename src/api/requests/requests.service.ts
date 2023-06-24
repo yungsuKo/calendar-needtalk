@@ -14,7 +14,6 @@ export class RequestsService {
 
   async create(createRequestDto: CreateRequestDto) {
     console.log(createRequestDto);
-    const { user, timeSlot, message } = createRequestDto;
     return await this.requestRepository.save(createRequestDto);
     // return '';
   }

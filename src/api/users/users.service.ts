@@ -20,9 +20,9 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  async findOne(email: string) {
+  async findOne(id: number) {
     const user = await this.usersRepository.findOne({
-      where: { email },
+      where: { id },
     });
     return user;
   }

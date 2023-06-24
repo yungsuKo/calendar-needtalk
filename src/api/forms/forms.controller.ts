@@ -6,10 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  Req,
+  Res,
 } from '@nestjs/common';
 import { FormsService } from './forms.service';
 import { CreateFormDto } from './dto/create-form.dto';
 import { UpdateFormDto } from './dto/update-form.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { JWTAccessGuard } from 'src/common/auth/auth.guards';
 
 @Controller('forms')
 export class FormsController {
@@ -23,6 +28,13 @@ export class FormsController {
   @Get()
   findAll() {
     return this.formsService.findAll();
+  }
+
+  @UseGuards(JWTAccessGuard)
+  @Get('/my')
+  findMyForms(@Req() req) {
+    console.log(req.user);
+    return this.formsService.findMyForms();
   }
 
   @Get(':id')

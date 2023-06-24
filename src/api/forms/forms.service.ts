@@ -20,10 +20,9 @@ export class FormsService {
     console.log(createFormDto);
     const { timeSlots, ...createForm } = createFormDto;
     const newForm = await this.formRepository.save(createForm);
-    const newTimeslots = [];
     for (const timeSlot of timeSlots) {
       console.log(timeSlot);
-      const newTimeslot = await this.timeSlotRepository.save({
+      await this.timeSlotRepository.save({
         form: newForm,
         timeSlot,
       });

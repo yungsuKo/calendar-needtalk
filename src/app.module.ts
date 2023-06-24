@@ -7,6 +7,7 @@ import { AuthModule } from './api/auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { IndexController } from './view/Index.controller';
 import { FormsModule } from './api/forms/forms.module';
+import { RequestsModule } from './api/requests/requests.module';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { FormsModule } from './api/forms/forms.module';
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_DATABASE,
       entities: ['dist/**/*.entity{.ts,.js}'],
-      synchronize: true,
+      synchronize: false,
       logging: true,
     }),
     PassportModule,
@@ -27,6 +28,7 @@ import { FormsModule } from './api/forms/forms.module';
     AuthModule,
     CommonModule,
     FormsModule,
+    RequestsModule,
   ],
   controllers: [IndexController],
   providers: [],

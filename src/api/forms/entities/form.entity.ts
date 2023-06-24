@@ -1,10 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-
-export interface TimeSlot {
-  id: string;
-  start: Date;
-  end: Date;
-}
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { TimeSlot } from './timeslot.entity';
 
 @Entity()
 export class Form {
@@ -19,7 +14,4 @@ export class Form {
 
   @Column()
   status: string;
-
-  @Column({ type: 'json' })
-  timeslots: TimeSlot[];
 }

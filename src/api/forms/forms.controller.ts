@@ -16,8 +16,8 @@ export class FormsController {
   constructor(private readonly formsService: FormsService) {}
 
   @Post()
-  create(@Body() createFormDto: CreateFormDto) {
-    return this.formsService.create(createFormDto);
+  async create(@Body() createFormDto: CreateFormDto) {
+    return await this.formsService.create(createFormDto);
   }
 
   @Get()

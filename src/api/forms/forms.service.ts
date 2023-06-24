@@ -4,18 +4,34 @@ import { UpdateFormDto } from './dto/update-form.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Form } from './entities/form.entity';
+import { TimeSlot } from './entities/timeslot.entity';
+import { time } from 'console';
 
 @Injectable()
 export class FormsService {
   constructor(
     @InjectRepository(Form)
     private formRepository: Repository<Form>,
+    @InjectRepository(TimeSlot)
+    private timeSlotRepository: Repository<TimeSlot>,
   ) {}
 
   async create(createFormDto: CreateFormDto) {
     console.log(createFormDto);
-    const newForm = await this.formRepository.save(createFormDto);
-    return newForm;
+    const { timeSlots, ...createForm } = createFormDto;
+    const newForm = await this.formRepository.save(createForm);
+    const newTimeslots = [];
+    for (const timeSlot of timeSlots) {
+      console.log(timeSlot);
+      const newTimeslot = await this.timeSlotRepository.save({
+        form: newForm,
+        timeSlot,
+      });
+    }
+    // const newTimeslots = timeslots.forEach(async (timeSlot) => {
+    //   return await this.timeSlotRepository.save(timeSlot);
+    // });
+    return;
   }
 
   findAll() {

@@ -5,9 +5,10 @@ import { ConfigModule } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { AuthModule } from './api/auth/auth.module';
 import { CommonModule } from './common/common.module';
-import { IndexController } from './view/Index.controller';
 import { FormsModule } from './api/forms/forms.module';
 import { RequestsModule } from './api/requests/requests.module';
+import { IndexController } from './view/Index.controller';
+import { UserController } from './view/user.controller';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { RequestsModule } from './api/requests/requests.module';
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_DATABASE,
       entities: ['dist/**/*.entity{.ts,.js}'],
-      synchronize: true,
+      synchronize: false,
       logging: true,
     }),
     PassportModule,
@@ -30,7 +31,7 @@ import { RequestsModule } from './api/requests/requests.module';
     FormsModule,
     RequestsModule,
   ],
-  controllers: [IndexController],
+  controllers: [IndexController, UserController],
   providers: [],
 })
 export class AppModule {}

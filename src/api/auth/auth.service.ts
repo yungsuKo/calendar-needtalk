@@ -68,11 +68,16 @@ export class AuthService {
           Date.now() + Number(process.env.JWT_REFRESH_TOKEN_EXPIRATION_TIME),
         ),
         httpOnly: true,
+        path: '/auth/accessToken',
       });
-      return {
-        ok: true,
-        accessToken,
-      };
+      res.cookie('accessToken', accessToken, {
+        expires: new Date(
+          Date.now() + Number(process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME),
+        ),
+        httpOnly: true,
+      });
+
+      return '로그인에 성공하였습니다.';
     } catch (error) {
       console.log(error);
       return { ok: false, error: '로그인에 실패하였습니다.' };

@@ -7,11 +7,11 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { AuthGuard } from '@nestjs/passport';
 import { JWTAccessGuard } from 'src/common/auth/auth.guards';
 
 @Controller('users')
@@ -30,8 +30,9 @@ export class UsersController {
 
   @UseGuards(JWTAccessGuard)
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.usersService.findOne(id);
+  findOne(@Req() req) {
+    const { email } = req.user;
+    return this.usersService.findOne(email);
   }
 
   @Patch(':id')

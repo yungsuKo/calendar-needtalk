@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { TimeSlot } from './timeslot.entity';
+import { FormStatus } from './form.enum';
 
 @Entity()
 export class Form {
@@ -13,5 +14,12 @@ export class Form {
   description: string;
 
   @Column()
-  status: string;
+  category: string;
+
+  @Column({
+    type: 'enum',
+    enum: FormStatus,
+    default: FormStatus.LIVE,
+  })
+  status: FormStatus;
 }

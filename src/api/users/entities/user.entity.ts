@@ -1,3 +1,4 @@
+import { Form } from 'src/api/forms/entities/form.entity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -16,4 +17,7 @@ export class User {
 
   @Column({ default: '안녕하세요' })
   introduce: string;
+
+  @Column()
+  forms: Form[];
 }

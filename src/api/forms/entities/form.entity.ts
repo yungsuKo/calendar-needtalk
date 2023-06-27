@@ -1,6 +1,13 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { TimeSlot } from './timeslot.entity';
 import { FormStatus } from './form.enum';
+import { User } from 'src/api/users/entities/user.entity';
 
 @Entity()
 export class Form {
@@ -22,4 +29,7 @@ export class Form {
     default: FormStatus.LIVE,
   })
   status: FormStatus;
+
+  @ManyToOne(() => User, (user) => user.forms)
+  user: User;
 }

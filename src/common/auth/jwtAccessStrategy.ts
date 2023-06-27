@@ -6,7 +6,11 @@ import { PassportStrategy } from '@nestjs/passport';
 export class JwtAccessStrategy extends PassportStrategy(Strategy, 'access') {
   constructor() {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: (req) => {
+        const cookie = req.headers.cookie;
+        const accessToken = cookie.replace('accessToken=', '');
+        return accessToken;
+      },
       ignoreExpiration: false, // false로 해야 accessToken의 만료시간을 검사한다.
       secretOrKey: process.env.JWT_ACCESS_TOKEN_SECRET_KEY,
     });

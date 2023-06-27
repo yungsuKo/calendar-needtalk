@@ -9,11 +9,11 @@ import {
   UseGuards,
   Req,
   Res,
+  Query,
 } from '@nestjs/common';
 import { FormsService } from './forms.service';
 import { CreateFormDto } from './dto/create-form.dto';
 import { UpdateFormDto } from './dto/update-form.dto';
-import { AuthGuard } from '@nestjs/passport';
 import { JWTAccessGuard } from 'src/common/auth/auth.guards';
 
 @Controller('forms')
@@ -26,7 +26,8 @@ export class FormsController {
   }
 
   @Get()
-  findAll() {
+  findAll(@Query() query: Record<string, any>) {
+    console.log(query);
     return this.formsService.findAll();
   }
 
@@ -48,7 +49,8 @@ export class FormsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.formsService.remove(+id);
+  @UseGuards(JWTAccessGuard)
+  remove(@Param('id') id: string, @Req() req) {
+    return this.formsService.remove(id, req.user);
   }
 }

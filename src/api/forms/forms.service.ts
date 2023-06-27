@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateFormDto } from './dto/create-form.dto';
 import { UpdateFormDto } from './dto/update-form.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -66,7 +66,16 @@ export class FormsService {
     return `This action updates a #${id} form`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} form`;
+  async remove(id: string, user) {
+    // form이 존재하는지 확인
+    // form의 생성자가 user인지 확인
+    // 맞으면 from과 모든 timeslot을 삭제 함.
+    // 아니면 에러
+    const form = await this.formRepository.findOne({ where: { id } });
+    if (form.user !== user.id) {
+      throw new HttpException('Unauthorized', HttpStatus.FORBIDDEN);
+    }
+    await this.formRepository.softDelete({ id });
+    return `This action removes a #${form.subject} form`;
   }
 }

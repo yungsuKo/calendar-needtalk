@@ -16,7 +16,7 @@ import { CreateFormDto } from './dto/create-form.dto';
 import { UpdateFormDto } from './dto/update-form.dto';
 import { JWTAccessGuard } from 'src/common/auth/auth.guards';
 
-@Controller('forms')
+@Controller('api/forms')
 export class FormsController {
   constructor(private readonly formsService: FormsService) {}
 

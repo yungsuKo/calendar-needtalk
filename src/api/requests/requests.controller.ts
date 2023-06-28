@@ -11,7 +11,7 @@ import { RequestsService } from './requests.service';
 import { CreateRequestDto } from './dto/create-request.dto';
 import { UpdateRequestDto } from './dto/update-request.dto';
 
-@Controller('requests')
+@Controller('api/requests')
 export class RequestsController {
   constructor(private readonly requestsService: RequestsService) {}
 

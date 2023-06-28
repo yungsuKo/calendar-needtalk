@@ -1,7 +1,7 @@
 import { Controller, Get, Render } from '@nestjs/common';
 
 @Controller('user')
-export class UserController {
+export class UserViewController {
   @Get('/')
   @Render('pages/signup')
   getIndex() {

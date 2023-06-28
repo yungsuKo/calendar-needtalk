@@ -18,6 +18,6 @@ export class User {
   @Column({ default: '안녕하세요' })
   introduce: string;
 
-  @Column()
+  @Column({ type: 'json' })
   forms: Form[];
 }

@@ -1,7 +1,7 @@
 import { Controller, Get, Render } from '@nestjs/common';
 
 @Controller()
-export class IndexController {
+export class IndexViewController {
   @Get('/')
   @Render('index')
   getIndex() {

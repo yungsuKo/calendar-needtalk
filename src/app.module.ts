@@ -7,8 +7,8 @@ import { AuthModule } from './api/auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { FormsModule } from './api/forms/forms.module';
 import { RequestsModule } from './api/requests/requests.module';
-import { IndexController } from './view/Index.controller';
-import { UserController } from './view/user.controller';
+import { IndexViewController } from './view/Index.view.controller';
+import { UserViewController } from './view/user.view.controller';
 
 @Module({
   imports: [
@@ -31,7 +31,7 @@ import { UserController } from './view/user.controller';
     FormsModule,
     RequestsModule,
   ],
-  controllers: [IndexController, UserController],
+  controllers: [IndexViewController, UserViewController],
   providers: [],
 })
 export class AppModule {}

@@ -5,9 +5,23 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { TimeSlot } from './timeslot.entity';
 import { FormStatus } from './form.enum';
 import { User } from 'src/api/users/entities/user.entity';
+
+export interface TimeSlotInterface {
+  start_time: string;
+  end_time: string;
+}
+
+export interface AvailableSlotInterface {
+  sun: [TimeSlotInterface];
+  mon: [TimeSlotInterface];
+  tue: [TimeSlotInterface];
+  wed: [TimeSlotInterface];
+  thu: [TimeSlotInterface];
+  fri: [TimeSlotInterface];
+  sat: [TimeSlotInterface];
+}
 
 @Entity()
 export class Form {
@@ -22,6 +36,26 @@ export class Form {
 
   @Column()
   category: string;
+
+  @Column()
+  start_date: Date;
+
+  @Column()
+  end_date: Date;
+
+  // 모든 시간 단위는 15 분 단위로 설정
+  @Column()
+  duration: number;
+
+  // 모든 시간 단위는 15 분 단위로 설정
+  @Column({ type: 'json' })
+  available_slots: AvailableSlotInterface;
+
+  @Column({ nullable: true })
+  break_time_type: string;
+
+  @Column({ nullable: true })
+  break_time_duration: number;
 
   @Column({
     type: 'enum',

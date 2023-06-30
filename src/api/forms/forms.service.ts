@@ -4,50 +4,22 @@ import { UpdateFormDto } from './dto/update-form.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Form } from './entities/form.entity';
-import { TimeSlot } from './entities/timeslot.entity';
-import { time } from 'console';
-
-interface TimeSlotInterface {
-  start: Date;
-  end: Date;
-}
 
 @Injectable()
 export class FormsService {
   constructor(
     @InjectRepository(Form)
     private formRepository: Repository<Form>,
-    @InjectRepository(TimeSlot)
-    private timeSlotRepository: Repository<TimeSlot>,
   ) {}
 
-  async create(createFormDto: CreateFormDto) {
+  async create({ createFormDto, user }) {
     console.log(createFormDto);
-    const { timeSlots, ...createForm } = createFormDto;
-    const newForm = await this.formRepository.save(createForm);
-    console.log(timeSlots);
-    // for (const timeSlot of timeSlots) {
-    //   console.log(typeof timeSlot);
-
-    //   await this.timeSlotRepository.save({
-    //     form: newForm,
-    //     start: timeSlot.start,
-    //     end: timeSlot.end,
-    //   });
-    // }
-
-    timeSlots.forEach(async (timeSlot: { start: Date; end: Date }) => {
-      const newTimeSlot = {
-        form: newForm,
-        ...timeSlot,
-      };
-      await this.timeSlotRepository.save(newTimeSlot);
-    });
-
-    // const newTimeslots = timeslots.forEach(async (timeSlot) => {
-    //   return await this.timeSlotRepository.save(timeSlot);
-    // });
-    return;
+    const {
+      available_slots: { sun, mon, tue, wed, thu, fri, sat },
+    } = createFormDto;
+    console.log(user);
+    const newForm = { ...createFormDto, user: user.userId };
+    return await this.formRepository.save(newForm);
   }
 
   findAll() {
@@ -58,8 +30,16 @@ export class FormsService {
     return 'myform list return';
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} form`;
+  async findOne(id: number) {
+    const strId = String(id);
+    const form = await this.formRepository.findOne({
+      where: { id: strId },
+      relations: ['user'],
+    });
+    const { available_slots } = form;
+    console.log(available_slots.sun);
+
+    return form;
   }
 
   update(id: number, updateFormDto: UpdateFormDto) {

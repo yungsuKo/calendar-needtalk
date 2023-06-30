@@ -1,4 +1,10 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Render } from '@nestjs/common';
 
-@Controller()
-export class FormViewController {}
+@Controller('/forms')
+export class FormViewController {
+  @Get('/create')
+  @Render('pages/createForm')
+  createForm() {
+    return {};
+  }
+}

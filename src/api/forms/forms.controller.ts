@@ -20,9 +20,10 @@ import { JWTAccessGuard } from 'src/common/auth/auth.guards';
 export class FormsController {
   constructor(private readonly formsService: FormsService) {}
 
+  @UseGuards(JWTAccessGuard)
   @Post()
-  async create(@Body() createFormDto: CreateFormDto) {
-    return await this.formsService.create(createFormDto);
+  async create(@Body() createFormDto: CreateFormDto, @Req() req) {
+    return await this.formsService.create({ createFormDto, user: req.user });
   }
 
   @Get()
@@ -39,8 +40,8 @@ export class FormsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.formsService.findOne(+id);
+  findOne(@Param('id') id: string, @Query() query: Record<string, any>) {
+    return this.formsService.findOne(+id, query);
   }
 
   @Patch(':id')

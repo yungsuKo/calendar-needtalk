@@ -30,16 +30,27 @@ export class FormsService {
     return 'myform list return';
   }
 
-  async findOne(id: number) {
+  async findOne(id: number, query) {
+    let result;
     const strId = String(id);
     const form = await this.formRepository.findOne({
       where: { id: strId },
       relations: ['user'],
     });
     const { available_slots } = form;
-    console.log(available_slots.sun);
 
-    return form;
+    const { month, date } = query;
+    if (date === undefined) {
+      // month요청이 들어올 경우
+      // 만약 month 쿼리가 들어오지 않은 경우 현재 일자를 기준으로 함.
+      // timeslot을 연산, available한 timeslot이 있는 일자만 리턴
+    } else {
+      // date가 들어온 경우
+      // 이때는 해당 일자의 available한 timeslot을 리턴
+    }
+
+    // result 포맷 : subject, description, status, user, available_slots
+    return result;
   }
 
   update(id: number, updateFormDto: UpdateFormDto) {

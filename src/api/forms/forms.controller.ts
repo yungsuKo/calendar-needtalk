@@ -15,10 +15,14 @@ import { FormsService } from './forms.service';
 import { CreateFormDto } from './dto/create-form.dto';
 import { UpdateFormDto } from './dto/update-form.dto';
 import { JWTAccessGuard } from 'src/common/auth/auth.guards';
+import { RequestsService } from '../requests/requests.service';
 
 @Controller('api/forms')
 export class FormsController {
-  constructor(private readonly formsService: FormsService) {}
+  constructor(
+    private readonly formsService: FormsService,
+    private readonly requestsService: RequestsService,
+  ) {}
 
   @UseGuards(JWTAccessGuard)
   @Post()

@@ -40,11 +40,15 @@ export class FormsService {
     const { available_slots } = form;
 
     const { month, date } = query;
-    if (date === undefined) {
+    if (date !== undefined) {
       // month요청이 들어올 경우
       // 만약 month 쿼리가 들어오지 않은 경우 현재 일자를 기준으로 함.
       // timeslot을 연산, available한 timeslot이 있는 일자만 리턴
     } else {
+      // const first_month_date = new Date(month);
+      // const last_month_date = new Date(month);
+      // last_month_date.setMonth(last_month_date.getMonth() + 1);
+      // console.log(last_month_date);
       // date가 들어온 경우
       // 이때는 해당 일자의 available한 timeslot을 리턴
     }

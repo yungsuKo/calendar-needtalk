@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Form } from './entities/form.entity';
 import { Request } from '../requests/entities/request.entity';
+import { start } from 'repl';
 
 @Injectable()
 export class FormsService {
@@ -35,7 +36,7 @@ export class FormsService {
   }
 
   async findOne(id: number, query) {
-    let result;
+    const days = [];
     const strId = String(id);
     const form = await this.formRepository.findOne({
       where: { id: strId },
@@ -44,7 +45,7 @@ export class FormsService {
     const { available_slots, start_date, end_date, duration } = form;
 
     const requests = await this.requestRepository.find({
-      where: { form: form },
+      where: { form: { id: form.id } },
       relations: ['user'],
     });
 
@@ -92,7 +93,7 @@ export class FormsService {
         cal_end_date = last_month_date;
       }
     }
-
+    console.log(cal_start_date);
     for (
       let i = cal_start_date;
       i <= cal_end_date;
@@ -101,18 +102,19 @@ export class FormsService {
       // i의 일자에 따라 available_slots을 찾아서 result에 추가
       // 이때 고려해야하는 것은 해당 i 요일에 available_slots이 존재하는지 여부
       const day_slots = available_slots[i.getDay()];
-      for (let j = 0; j < day_slots.length; j += 1) {
-        if (day_slots[j].end_date - day_slots[j].start_date < duration) {
-          continue;
-        }
-        // 해당 시간범주 내에 속하는 request start_date를 가져옴
-        const requests = await this.requestRepository.find({
-          where: { form: { id: strId } },
-        });
-        // j의 시간에 따라 request가 존재하는지 확인
-        // 존재하지 않으면 result에 추가
-        // 존재한다면 continue
+      console.log(i.getDay(), i, day_slots);
+      if (day_slots === undefined) {
+        continue;
       }
+      const date = `${i.getFullYear()}-${(
+        0 + String(i.getMonth() + 1)
+      ).substring(-2)}-${(0 + String(i.getDate())).substring(-2)}`;
+      // 해당 시간범주 내에 속하는 request start_date를 가져옴
+      // 해당 For문이 끝나면 request가 존재하는 일자 기준으로 for문을 돌리는게 나을 듯
+      days.push({ date });
+      // 존재하지 않으면 result에 추가
+      // 존재한다면 continue
+
       // 존재하지 않으면 continue
       // 존재한다면 request를 가져와서 해당 request의 시간을 제외했을 때 duration만큼의 시간이 확보되는지 확인
       // 확보된다면 result에 추가
@@ -126,7 +128,7 @@ export class FormsService {
     // 3. duration만큼의 시간이 확보되는 timeslot을 찾아야 함.
 
     // result 포맷 : subject, description, status, user, available_date
-    return result;
+    return days;
   }
 
   update(id: number, updateFormDto: UpdateFormDto) {

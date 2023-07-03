@@ -7,10 +7,11 @@
     <div class="full-wrapper">
       <%-include('../parts/header') %>
       <div class="container">
-        <div class="d-flex justify-content-center">
+        <div class="d-flex flex-column align-items-center">
+          <div class="intro_img"></div>
           <button
             type="button"
-            class="btn image-button"
+            class="btn image-button mt-3"
             onclick="googleLoginBtn()"
           ></button>
         </div>
@@ -19,7 +20,7 @@
     <script src="/static/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script>
       function googleLoginBtn() {
-        location.href = '/auth/google';
+        location.href = '/api/auth/google';
       }
     </script>
   </body>

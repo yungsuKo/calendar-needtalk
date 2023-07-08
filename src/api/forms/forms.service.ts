@@ -36,6 +36,7 @@ export class FormsService {
   }
 
   async findOne(id: number, query) {
+    const result = { days: [] };
     const days = [];
     const strId = String(id);
     const form = await this.formRepository.findOne({
@@ -49,6 +50,9 @@ export class FormsService {
       relations: ['user'],
     });
 
+    /**
+     * date를 구하여 days에 삽입
+     */
     const { month } = query;
     let first_month_date: Date;
     let last_month_date: Date;
@@ -93,42 +97,50 @@ export class FormsService {
         cal_end_date = last_month_date;
       }
     }
-    console.log(cal_start_date);
     for (
       let i = cal_start_date;
       i <= cal_end_date;
       i.setDate(i.getDate() + 1)
     ) {
-      // i의 일자에 따라 available_slots을 찾아서 result에 추가
-      // 이때 고려해야하는 것은 해당 i 요일에 available_slots이 존재하는지 여부
       const day_slots = available_slots[i.getDay()];
-      console.log(i.getDay(), i, day_slots);
+
+      // day_slots가 존재할 경우에만 slots를 연산하여 추가
       if (day_slots === undefined) {
         continue;
       }
       const date = `${i.getFullYear()}-${(
         0 + String(i.getMonth() + 1)
       ).substring(-2)}-${(0 + String(i.getDate())).substring(-2)}`;
-      // 해당 시간범주 내에 속하는 request start_date를 가져옴
-      // 해당 For문이 끝나면 request가 존재하는 일자 기준으로 for문을 돌리는게 나을 듯
-      days.push({ date });
-      // 존재하지 않으면 result에 추가
-      // 존재한다면 continue
-
-      // 존재하지 않으면 continue
-      // 존재한다면 request를 가져와서 해당 request의 시간을 제외했을 때 duration만큼의 시간이 확보되는지 확인
-      // 확보된다면 result에 추가
-      // 확보되지 않는다면 continue
+      const start_time_items = [];
+      // spots를 구하여 days에 추가
+      for (let i = 0; i < day_slots.length; i++) {
+        console.log('day_slots[i].start_time', day_slots[i].start_time);
+        console.log('day_slots[i].end_time', day_slots[i].end_time);
+        let start_time_item = day_slots[i].start_time;
+        while (day_slots[i].end_time - duration > start_time_item) {
+          const start_time_slot = Number(new Date(date));
+          const start_time = new Date(
+            start_time_slot + start_time_item * 1000 * 60 * 60,
+          );
+          start_time_items.push(start_time);
+          start_time_item += 0.5;
+        }
+        console.log(start_time_items);
+      }
+      days.push({
+        date,
+        slots: start_time_items,
+        // spots
+      });
     }
-    // 해당 기간 range 중에 가능한 timeslot이 존재하는 일자만 찾아서 리턴
-    // 고려해야할 점
-    // 1. start_date, end_date에 존재하면서
-    // 2. request가 존재하는 시간을 제외하고
-    // 3. 요일별 available_slots을 고려하여
-    // 3. duration만큼의 시간이 확보되는 timeslot을 찾아야 함.
 
-    // result 포맷 : subject, description, status, user, available_date
-    return days;
+    // 서버, 클라이언트 시간대 통일하거나 일정한 규칙이 필요함. 리서치 해봐야 겠음.
+    // days에 해당 날짜에 대한 timeslot을 추가
+    // 요일별로 timeslot은 동일함.
+    // days에 해당 날짜에 대한 timeslot을 추가
+    // request에서 리턴된 날짜들에 대해서만 for문을 돌리면 될 듯
+    result.days = days;
+    return result;
   }
 
   update(id: number, updateFormDto: UpdateFormDto) {

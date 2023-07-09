@@ -23,7 +23,10 @@ export class FormsService {
       available_slots: { sun, mon, tue, wed, thu, fri, sat },
     } = createFormDto;
     console.log(user);
-    const newForm = { ...createFormDto, user: user.userId };
+    const newForm = {
+      ...createFormDto,
+      // user: user.userId
+    };
     return await this.formRepository.save(newForm);
   }
 
@@ -114,10 +117,8 @@ export class FormsService {
       const start_time_items = [];
       // spots를 구하여 days에 추가
       for (let i = 0; i < day_slots.length; i++) {
-        console.log('day_slots[i].start_time', day_slots[i].start_time);
-        console.log('day_slots[i].end_time', day_slots[i].end_time);
         let start_time_item = day_slots[i].start_time;
-        while (day_slots[i].end_time - duration > start_time_item) {
+        while (day_slots[i].end_time - duration >= start_time_item) {
           const start_time_slot = Number(new Date(date));
           const start_time = new Date(
             start_time_slot + start_time_item * 1000 * 60 * 60,
@@ -125,11 +126,19 @@ export class FormsService {
           start_time_items.push(start_time);
           start_time_item += 0.5;
         }
-        console.log(start_time_items);
       }
+      const requests_time = requests.map((request) =>
+        request.req_start_time.toISOString(),
+      );
+      console.log(requests_time);
+      const start_time_result = start_time_items.filter(
+        (i) => !requests_time.includes(i.toISOString()),
+      );
+
+      console.log(start_time_result);
       days.push({
         date,
-        slots: start_time_items,
+        slots: start_time_result,
         // spots
       });
     }

@@ -130,19 +130,19 @@ export class FormsService {
       const requests_time = requests.map((request) =>
         request.req_start_time.toISOString(),
       );
-      console.log(requests_time);
       const start_time_result = start_time_items.filter(
-        (i) => !requests_time.includes(i.toISOString()),
+        (i) =>
+          // i보다 크고 i + duration
+          !requests_time.includes(i.toISOString()),
       );
 
-      console.log(start_time_result);
       days.push({
         date,
         slots: start_time_result,
         // spots
       });
     }
-
+    console.log(new Date());
     // 서버, 클라이언트 시간대 통일하거나 일정한 규칙이 필요함. 리서치 해봐야 겠음.
     // days에 해당 날짜에 대한 timeslot을 추가
     // 요일별로 timeslot은 동일함.

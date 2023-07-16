@@ -1,3 +1,4 @@
+import { Form } from 'src/api/forms/entities/form.entity';
 import { User } from 'src/api/users/entities/user.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -11,4 +12,10 @@ export class Request {
 
   @Column()
   message: string;
+
+  @Column()
+  req_start_time: Date;
+
+  @ManyToOne(() => Form, (form) => form.id)
+  form: Form;
 }

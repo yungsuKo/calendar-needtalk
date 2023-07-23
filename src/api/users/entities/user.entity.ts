@@ -6,7 +6,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ select: false })
   googleId: string;
 
   @Column()
@@ -18,6 +18,6 @@ export class User {
   @Column({ default: '안녕하세요' })
   introduce: string;
 
-  @Column({ type: 'json' })
+  @Column({ type: 'json', nullable: true })
   forms: Form[];
 }

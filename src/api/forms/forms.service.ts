@@ -47,7 +47,6 @@ export class FormsService {
       relations: ['user'],
     });
     const { available_slots, start_date, end_date, duration } = form;
-
     const requests = await this.requestRepository.find({
       where: { form: { id: form.id } },
       relations: ['user'],

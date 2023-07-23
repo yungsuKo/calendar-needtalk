@@ -9,8 +9,8 @@ import { FormStatus } from './form.enum';
 import { User } from 'src/api/users/entities/user.entity';
 
 export interface TimeSlotInterface {
-  start_time: string;
-  end_time: string;
+  start_time: number;
+  end_time: number;
 }
 
 export interface AvailableSlotInterface {
@@ -43,11 +43,11 @@ export class Form {
   @Column()
   end_date: Date;
 
-  // 모든 시간 단위는 15 분 단위로 설정
+  // 모든 시간 단위는 시간
   @Column()
   duration: number;
 
-  // 모든 시간 단위는 15 분 단위로 설정
+  // 모든 시간 단위는 시간
   @Column({ type: 'json' })
   available_slots: AvailableSlotInterface;
 

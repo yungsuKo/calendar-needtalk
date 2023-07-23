@@ -7,8 +7,6 @@ import { AuthModule } from './api/auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { FormsModule } from './api/forms/forms.module';
 import { RequestsModule } from './api/requests/requests.module';
-import { IndexViewController } from './view/Index.view.controller';
-import { UserViewController } from './view/user.view.controller';
 
 @Module({
   imports: [
@@ -21,7 +19,7 @@ import { UserViewController } from './view/user.view.controller';
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_DATABASE,
       entities: ['dist/**/*.entity{.ts,.js}'],
-      synchronize: false,
+      synchronize: true,
       logging: true,
     }),
     PassportModule,
@@ -31,7 +29,7 @@ import { UserViewController } from './view/user.view.controller';
     FormsModule,
     RequestsModule,
   ],
-  controllers: [IndexViewController, UserViewController],
+  controllers: [],
   providers: [],
 })
 export class AppModule {}

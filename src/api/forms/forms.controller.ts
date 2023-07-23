@@ -24,7 +24,7 @@ export class FormsController {
     private readonly requestsService: RequestsService,
   ) {}
 
-  @UseGuards(JWTAccessGuard)
+  // @UseGuards(JWTAccessGuard)
   @Post()
   async create(@Body() createFormDto: CreateFormDto, @Req() req) {
     return await this.formsService.create({ createFormDto, user: req.user });
@@ -45,6 +45,11 @@ export class FormsController {
 
   @Get(':id')
   findOne(@Param('id') id: string, @Query() query: Record<string, any>) {
+    return this.formsService.findOne(+id, query);
+  }
+
+  @Get(':id/timeslots')
+  findTimeslots(@Param('id') id: string, @Query() query: Record<string, any>) {
     return this.formsService.findOne(+id, query);
   }
 

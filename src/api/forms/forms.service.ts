@@ -18,13 +18,17 @@ export class FormsService {
   ) {}
 
   async create({ createFormDto, user }) {
-    console.log(createFormDto);
     const {
       available_slots: { sun, mon, tue, wed, thu, fri, sat },
+      start_date,
+      end_date,
     } = createFormDto;
+
     console.log(user);
     const newForm = {
       ...createFormDto,
+      start_date: new Date(start_date),
+      end_date: new Date(end_date),
       // user: user.userId
     };
     return await this.formRepository.save(newForm);
